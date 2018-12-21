@@ -1,0 +1,6 @@
+node_modules/
+data/
+priv_validator.json
+node_key.json
+config/priv_validator.json
+config/node_key.json
