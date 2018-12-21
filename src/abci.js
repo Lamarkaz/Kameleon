@@ -7,7 +7,7 @@ module.exports = function (app) {
     info (request) {
       app.emit('info', request)
       return {
-        // version: require('./package.json').version,
+        // version: require('../package.json').version,
         // appVersion:app.options.chainId
       }
     },
