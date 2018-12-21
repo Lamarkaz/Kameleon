@@ -50,7 +50,6 @@ module.exports = function (app) {
       app.stateMachine.transition({ type: 'block', data: {} })
       let { validators } = app.stateMachine.context()
       let validatorUpdates = []
-      console.log(validators)
       for (let pubKey in validators) {
         validatorUpdates.push({
           pubKey: { type: validators[pubKey].type, data: Buffer.from(pubKey, 'base64') },
@@ -69,7 +68,6 @@ module.exports = function (app) {
       return { data: Buffer.from(data, 'hex') }
     },
     initChain(request) {
-      console.log(request.validators)
       /**
        * in next abci version, we'll get a timestamp here.
        * height is no longer tracked on info (we want to encourage isomorphic chain/channel code)
