@@ -13,10 +13,12 @@ class KameleonApp {
         var defaultOptions = {
             initialState: {},
             queryHandlers:{},
+            peers:[],
             validators:[],
             verbose: false,
             home: process.cwd(),
             blockSize:1000000, // 1MB
+            txSize: 100000,
             rpcPort:26657,
             abciPort:26658,
             p2pPort:44446,
@@ -82,10 +84,6 @@ class KameleonApp {
         this.stateMachine = this.stateMachine.compile()
         this.abciServer = abciServer(this)
         this.tendermint = tendermintNode(this)
-
-        console.log('RPC PORT:', this.options.rpcPort)
-        console.log('ABCI PORT:', this.options.abciPort)
-        console.log('P2P PORT:', this.options.p2pPort)
 
         var self = this;
         process.on('SIGINT', function() {

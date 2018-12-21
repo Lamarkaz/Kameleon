@@ -9,7 +9,8 @@ module.exports = function(app) {
             laddr: 'tcp://127.0.0.1:'+ app.options.rpcPort
         },
         p2p: {
-            laddr: 'tcp://127.0.0.1:'+ app.options.p2pPort
+            laddr: 'tcp://127.0.0.1:'+ app.options.p2pPort,
+            persistentPeers: app.options.peers
         },
         proxyApp: 'tcp://127.0.0.1:'+ app.options.abciPort
     })

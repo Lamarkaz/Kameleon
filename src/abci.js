@@ -50,7 +50,7 @@ module.exports = function (app) {
       app.stateMachine.transition({ type: 'block', data: {} })
       let { validators } = app.stateMachine.context()
       let validatorUpdates = []
-
+      console.log(validators)
       for (let pubKey in validators) {
         validatorUpdates.push({
           pubKey: { type: validators[pubKey].type, data: Buffer.from(pubKey, 'base64') },
@@ -69,6 +69,7 @@ module.exports = function (app) {
       return { data: Buffer.from(data, 'hex') }
     },
     initChain(request) {
+      console.log(request.validators)
       /**
        * in next abci version, we'll get a timestamp here.
        * height is no longer tracked on info (we want to encourage isomorphic chain/channel code)
@@ -79,8 +80,10 @@ module.exports = function (app) {
       return {
         consensusParams: {
           blockSize: {
-            maxBytes: app.options.blockSize
+            maxBytes: app.options.blockSize,
+            maxGas: request.consensusParams.blockSize.maxGas
           },
+          txSize: {maxBytes: app.options.txSize},
           validator: {
             pubKeyTypes: app.options.validatorPubKeyTypes
           }
@@ -105,15 +108,15 @@ module.exports = function (app) {
     
   }).listen(app.options.abciPort)
 
-  function buildInitialInfo(initChainRequest) {
+  function buildInitialInfo(initialValidators) {
     let result = {
       validators: {}
     }
-    initChainRequest.validators.forEach(validator => {
+    initialValidators.forEach(validator => {
       result.validators[
         validator.pubKey.data.toString('base64')
       ] = {
-        power:validator.power.toNumber(),
+        power:validator.power.low,
         type:validator.pubKey.type
       }
     })
